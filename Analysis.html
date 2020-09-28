@@ -1,0 +1,60 @@
+</head>
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
+  <body>
+    <div id="map" style="width: 1920x; height: 1080px;"></div>
+    <script>
+      var apiKey = "f99bfae5722c42f192a8dff60c8e89a5"; // Your BreezoMeter API key
+      var mapBoxAccessToken = "pk.eyJ1IjoiZmFyZGluYWhvc2FuIiwiYSI6ImNrZXh6NjNvaTBqMDAyemw4eG4zMnF3MG4ifQ.u22eLFcqdyKBg2SliUK3dg"; // your mapbox access token from: https://account.mapbox.com
+
+      var errorMessageBrz =
+        "Update the variable 'apiKey' with a BreezoMeter API key to see the tiles. Contact BreezoMeter if you need any help:    breezometer.com/contact-us";
+      var errorMessageMapbox =
+        "Update the variable 'mapBoxAccessToken' with a Mapbox Access Token to initialize the Mapbox SDK. You can get it from:                https://account.mapbox.com";
+
+      if (apiKey === "") alert(errorMessageBrz);
+      if (mapBoxAccessToken === "") alert(errorMessageMapbox);
+
+      var map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/fardinahosan/ckfm29tz07mm519pnnxqc0o4z", // your stylesheet location
+        center: [-74.5, 40], // starting position [lng, lat]
+        zoom: 9, // starting zoom
+        accessToken: mapBoxAccessToken
+      });
+
+      map.on("load", function() {
+        addRasterSource();
+        addRasterLayer();
+      });
+
+      function addRasterSource() {
+        map.addSource("breezometer-tiles", {
+          type: "raster",
+          tiles: [
+            `https://tiles.breezometer.com/v1/air-quality/breezometer-aqi/current-conditions/{z}/{x}/{y}.png?key=${apiKey}&breezometer_aqi_color=indiper`
+          ],
+          tileSize: 256,
+          maxzoom: 8
+        });
+      }
+
+      function addRasterLayer() {
+        map.addLayer(
+          {
+            id: "breezometer-tiles",
+            type: "raster",
+            source: "breezometer-tiles",
+            minzoom: 0,
+            maxzoom: 22,
+            paint: {
+              "raster-opacity": 0.6
+            }
+          },
+          "admin-1-boundary-bg"
+        );
+      }
+    </script>
+  </body>
+</html>
