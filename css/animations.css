@@ -1,4 +1,12 @@
+/*------------------------------------------------------------------
+[Animations Stylesheet]
 
+Author: AtypicalThemes
+Template: Strider - A Game Studio Template
+Version:	1.0
+
+------------------------------------------------------------------- */
+/* KEYFRAMES */
 @keyframes pop-in {
 0% { opacity: 0; transform: scale(0.5); }
 100% { opacity: 1; transform: scale(1); }
